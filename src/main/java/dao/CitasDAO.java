@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.Citas;
@@ -194,4 +196,34 @@ public class CitasDAO {
         }
         return lista;
     }
+    
+    public boolean verificarDisponibilidad(Connection con, int veterinarioId, LocalDate fecha, LocalTime hora) throws SQLException {
+        LocalTime finNueva = hora.plusMinutes(30);
+
+        String sql = """
+            SELECT fecha_hora
+            FROM citas
+            WHERE veterinario_id = ? AND DATE(fecha_hora) = ?
+        """;
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, veterinarioId);
+            stmt.setDate(2, java.sql.Date.valueOf(fecha));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    LocalTime inicioExistente = rs.getTimestamp("fecha_hora").toLocalDateTime().toLocalTime();
+                    LocalTime finExistente = inicioExistente.plusMinutes(30);
+
+                    if (hora.isBefore(finExistente) && finNueva.isAfter(inicioExistente)) {
+                    System.out.printf("Ya tiene una cita de %s a %s%n", inicioExistente, finExistente);
+                    return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }
+
+

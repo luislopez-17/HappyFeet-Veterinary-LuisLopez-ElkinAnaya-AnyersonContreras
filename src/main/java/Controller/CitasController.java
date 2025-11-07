@@ -5,13 +5,17 @@
 package Controller;
 
 import dao.CitasDAO;
+import dao.VeterinarioDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import model.Citas;
 import utils.ConexionDB;
 
@@ -132,5 +136,45 @@ public class CitasController {
 
     public List<Citas> listar() {
         return citasDao.listar();
-    }  
+    }
+    
+    public String verificarDisponibilidad(int vetId, String fechaStr, String horaStr) {
+        try (Connection con = ConexionDB.conectar()) {
+
+            // Validar formato de fecha y hora
+            LocalDate fecha;
+            LocalTime hora;
+            try {
+                fecha = LocalDate.parse(fechaStr);
+                hora = LocalTime.parse(horaStr);
+            } catch (Exception e) {
+                return "Error: formato de fecha u hora inválido. Use YYYY-MM-DD y HH:MM";
+            }
+
+            // Validar horario laboral
+            if (hora.isBefore(LocalTime.of(9, 0)) || hora.isAfter(LocalTime.of(17, 0))) {
+                return "Error: fuera del horario laboral (9:00 - 17:00).";
+            }
+
+            // Verificar existencia del veterinario
+            VeterinarioDAO vdao = new VeterinarioDAO();
+            if (!vdao.existeId(con, vetId)) {
+                return "Error: el veterinario con ID " + vetId + " no existe.";
+            }
+
+            // Verificar disponibilidad
+            CitasDAO dao = new CitasDAO();
+            boolean disponible = dao.verificarDisponibilidad(con, vetId, fecha, hora);
+
+            if (disponible) {
+                return "El Dr. " + vetId + " SÍ está disponible el " + fecha + " a las " + hora + ".";
+            } else {
+                return "El Dr. " + vetId + " NO está disponible en ese horario.";
+            }
+
+        } catch (SQLException e) {
+            return "Error al conectar o consultar la base de datos: " + e.getMessage();
+        }
+    }
+
 }

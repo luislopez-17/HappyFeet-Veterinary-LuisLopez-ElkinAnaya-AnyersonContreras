@@ -135,7 +135,7 @@ public class HappyFeetVeterinaria {
                 case 25 ->  VistaClubMascotas.mostrarMenu();
                 case 26 -> VistaTransaccionesPuntos.mostrarMenu();
                 case 27 -> VistaBeneficiosClub.mostrarMenu();
-                case 28 -> VistaCanjesBeneficios.mostrarMenu();
+                case 28 -> VistaCanjesBeneficios.mostrarMenu(); 
                 case 0 -> System.out.println("Cerrando el sistema...");
                 default -> System.out.println("Opción inválida.");
             }

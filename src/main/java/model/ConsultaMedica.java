@@ -75,6 +75,13 @@ public class ConsultaMedica {
     public void setMascota(String mascota){this.mascota = mascota;}
     private void setVeterinario(String veterinario){this.veterinario = veterinario;}
     public void setCita(String cita){this.cita = cita;}
+    public void setFechaHora(Timestamp fechaHora) {
+    this.fechaHora = fechaHora;
+}
+
+public void setPesoRegistrado(double pesoRegistrado) {
+    this.pesoRegistrado = pesoRegistrado;
+}
     
     public String toString(){
         String nombreMascota = (this.mascota != null) ? this.mascota : "Mascota#" + idMascotas;

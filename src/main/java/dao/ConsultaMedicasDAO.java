@@ -215,5 +215,40 @@ public class ConsultaMedicasDAO {
 
         return lista;
     }
+    
+    public List<ConsultaMedica> obtenerHistorialPesoPorMascota(Connection con, int mascotaId) throws SQLException {
+        List<ConsultaMedica> lista = new ArrayList<>();
+
+        String sql = """
+            SELECT fecha_hora, peso_registrado
+            FROM consultas_medicas
+            WHERE mascota_id = ? AND peso_registrado IS NOT NULL
+            ORDER BY fecha_hora ASC
+        """;
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, mascotaId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ConsultaMedica c = new ConsultaMedica(
+                        0, // id
+                        mascotaId,
+                        0, // idVeterinario
+                        0, // idCita
+                        rs.getTimestamp("fecha_hora"),
+                        null, // motivo
+                        null, // sintomas
+                        null, // diagnostico
+                        null, // recomendaciones
+                        null, // observaciones
+                        rs.getDouble("peso_registrado"),
+                        0.0 // temperatura
+                    );
+                    lista.add(c);
+                }
+            }
+        }
+        return lista;
+    }
 }
 

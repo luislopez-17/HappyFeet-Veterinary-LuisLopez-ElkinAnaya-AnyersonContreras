@@ -20,6 +20,19 @@ import utils.ConexionDB;
  * @author usuario
  */
 public class VeterinarioDAO {
+    
+    public boolean existeId(Connection con, int idVeterinario) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM veterinarios WHERE id = ?";
+    try (PreparedStatement stmt = con.prepareStatement(sql)) {
+        stmt.setInt(1, idVeterinario);
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+    return false;
+}
     public boolean existedocumento(Connection con, String documento) throws SQLException{
         String sql = "SELECT COUNT(*) FROM veterinarios WHERE documento_identidad = ?";
         try(PreparedStatement stmt = con.prepareStatement(sql)){

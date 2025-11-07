@@ -25,6 +25,7 @@ public class CitasVIEW {
             System.out.println("2. Actualizar cita");
             System.out.println("3. Eliminar cita");
             System.out.println("4. Listar citas");
+            System.out.println("5. consultar disponibilidad veterinario");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
             opcion = leerEntero();
@@ -34,6 +35,7 @@ public class CitasVIEW {
                 case 2 -> actualizar();
                 case 3 -> eliminar();
                 case 4 -> listar();
+                case 5 -> verificarDisponibilidadVeterinario();
                 case 0 -> System.out.println("Saliendo del módulo citas...");
                 default -> System.out.println("Opción inválida.");
             }
@@ -115,5 +117,22 @@ public class CitasVIEW {
                 System.out.print("Ingrese un número decimal válido: ");
             }
         }
+    }
+    
+    public void verificarDisponibilidadVeterinario() {
+        System.out.println("==== VERIFICAR DISPONIBILIDAD DE VETERINARIO ====");
+
+        System.out.print("Ingrese el ID del veterinario: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Ingrese la fecha (YYYY-MM-DD): ");
+        String fecha = sc.nextLine();
+
+        System.out.print("Ingrese la hora (HH:MM): ");
+        String hora = sc.nextLine();
+
+        String resultado = controller.verificarDisponibilidad(id, fecha, hora);
+        System.out.println(resultado);
     }
 }

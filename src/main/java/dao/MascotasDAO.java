@@ -21,6 +21,35 @@ import utils.ConexionDB;
  * @author usuario
  */
 public class MascotasDAO {
+     public Mascotas buscarPorId(Connection con, int idMascota) throws SQLException {
+        String sql = "SELECT * FROM mascotas WHERE id = ?";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, idMascota);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Mascotas m = new Mascotas(
+                        rs.getInt("id"),
+                        rs.getInt("dueno_id"),
+                        rs.getString("nombre"),
+                        rs.getInt("raza_id"),
+                        rs.getDate("fecha_nacimiento"),
+                        Mascotas.Sexo.valueOf(rs.getString("sexo")),
+                        rs.getDouble("peso_actual"),
+                        rs.getString("microchip"),
+                        rs.getString("tatuaje"),
+                        rs.getString("url_foto"),
+                        rs.getString("alergias"),
+                        rs.getString("condiciones_preexistentes"),
+                        rs.getTimestamp("fecha_registro"),
+                        rs.getBoolean("activo")
+                    );
+                    return m;
+                }
+            }
+        }
+        return null; // si no se encontró la mascota
+    }
+    
     public boolean existeDueno(Connection con, int duenoId) throws SQLException{
         String sql = "SELECT COUNT(*) FROM duenos WHERE id = ?";
         try (PreparedStatement stmt = con.prepareStatement(sql)){

@@ -5,6 +5,7 @@
 package Controller;
 
 import dao.ConsultaMedicasDAO;
+import dao.MascotasDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -13,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import model.ConsultaMedica;
+import model.Mascotas;
 import utils.ConexionDB;
 
 public class ConsultasMedicasController {
@@ -167,5 +169,51 @@ public class ConsultasMedicasController {
 
     public List<ConsultaMedica> listar() {
         return consultasDao.listar();
+    }
+    
+    public String generarReportePeso(int mascotaId) {
+        try (Connection con = ConexionDB.conectar()) {
+
+            // 1️⃣ Verificar si la mascota existe
+            MascotasDAO mascotaDAO = new MascotasDAO();
+            Mascotas mascota = mascotaDAO.buscarPorId(con, mascotaId);
+
+            if (mascota == null) {
+                return "Error: No se encontró ninguna mascota con el ID proporcionado.";
+            }
+
+            // 2️⃣ Consultar historial de pesos
+            ConsultaMedicasDAO dao = new ConsultaMedicasDAO();
+            List<ConsultaMedica> lista = dao.obtenerHistorialPesoPorMascota(con, mascotaId);
+
+            if (lista.isEmpty()) {
+                return "No hay registros de peso para la mascota '" + mascota.getNombre() + "'.";
+            }
+
+            // 3️⃣ Construir el reporte
+            StringBuilder sb = new StringBuilder();
+            sb.append("+++++++++++++++++++++++++++++++++++++++++++++\n");
+            sb.append("HISTORIAL DE PESO DEL PACIENTE\n");
+            sb.append("+++++++++++++++++++++++++++++++++++++++++++++\n\n");
+            sb.append("DATOS DEL PACIENTE\n");
+            sb.append("Nombre:   ").append(mascota.getNombre()).append("\n");
+            sb.append("Especie:  ").append(mascota.getNombre()).append("\n");
+            sb.append("Raza:     ").append(mascota.getRazaid()).append("\n\n");
+            sb.append("REGISTRO DE PESOS\n");
+            sb.append("Fecha Consulta\t\t| Peso Registrado\n");
+            sb.append("-----------------------------------------\n");
+
+            double ultimo = 0;
+            for (ConsultaMedica c : lista) {
+                sb.append(String.format("%s | %.2f kg%n", c.getFechaHora(), c.getPesoRegistrado()));
+                ultimo = c.getPesoRegistrado();
+            }
+
+            sb.append(String.format("%n>> Último peso registrado: %.2f kg%n", ultimo));
+            return sb.toString();
+
+        } catch (SQLException e) {
+            return "Error al conectar o consultar la base de datos: " + e.getMessage();
+        }
     }
 }

@@ -30,6 +30,7 @@ public class ConsultasMedicasVIEW {
             System.out.println("2. Actualizar consulta");
             System.out.println("3. Eliminar consulta");
             System.out.println("4. Listar consultas");
+            System.out.println("5. Historial peso");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
             opcion = leerEntero();
@@ -39,6 +40,7 @@ public class ConsultasMedicasVIEW {
                 case 2 -> actualizar();
                 case 3 -> eliminar();
                 case 4 -> listar();
+                case 5 -> consultarHistorialPeso();
                 case 0 -> System.out.println("Saliendo del módulo consultas médicas...");
                 default -> System.out.println("Opción inválida.");
             }
@@ -124,6 +126,17 @@ public class ConsultasMedicasVIEW {
         } else {
             lista.forEach(System.out::println);
         }
+    }
+    
+    public void consultarHistorialPeso() {
+        System.out.println("==== CONSULTAR HISTORIAL DE PESO ====");
+        System.out.print("Ingrese el ID de la mascota: ");
+        int id = sc.nextInt();
+        sc.nextLine(); // limpiar buffer
+
+        String reporte = controller.generarReportePeso(id);
+        System.out.println();
+        System.out.println(reporte);
     }
 
     private int leerEntero() {
