@@ -4,9 +4,13 @@
  */
 package Controller;
 import dao.AdopcionDAO;
+import java.io.IOException;
+import java.sql.Connection;
 import model.Adopcion;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
+import utils.ConexionDB;
 /**
  *
  * @author ELKIN
@@ -75,6 +79,40 @@ public class AdopcionController {
     // Listar todas las adopciones
     public List<Adopcion> listar() {
         return dao.listar();
+    }
+    
+    
+    //EXAMEN
+    public String generarYGuardarContrato(int adopcionId) {
+        try (Connection con = ConexionDB.conectar()) {
+            AdopcionDAO dao = new AdopcionDAO();
+
+            // 1️⃣ Validar si existe y no tiene contrato
+            if (!dao.existeAdopcionSinContrato(con, adopcionId)) {
+                return "Error: La adopción no existe o ya tiene un contrato generado.";
+            }
+
+            // 2️⃣ Obtener los datos completos
+            Adopcion adopcion = dao.obtenerDatosCompletos(con, adopcionId);
+            if (adopcion == null) {
+                return "Error: No se encontraron datos para la adopción ID " + adopcionId;
+            }
+
+            // 3️⃣ Generar contrato
+            String contratoTexto = dao.generarContratoTexto(adopcion);
+
+            // 4️⃣ Guardar archivo + actualizar base de datos
+            dao.guardarContrato(con, adopcionId, contratoTexto);
+
+            return "Contrato para la adopción ID " + adopcionId +
+                   " generado y guardado exitosamente en 'contrato_adopcion_" +
+                   adopcionId + ".txt' y actualizado en la base de datos.";
+
+        } catch (SQLException e) {
+            return " Error de base de datos: " + e.getMessage();
+        } catch (IOException e) { // Problema de una operación de entrada/salida
+            return " Error al crear el archivo: " + e.getMessage();
+        }
     }
 
 }

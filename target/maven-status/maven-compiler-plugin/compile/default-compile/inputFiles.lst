@@ -24,6 +24,7 @@ C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Controller\ProveedoresController.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Controller\RazasController.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Controller\RegistroJornadaVacunacionController.java
+C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Controller\ReporteProductoController.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Controller\ServiciosController.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Controller\TransaccionesPuntosController.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Controller\VeterinarioController.java
@@ -52,6 +53,7 @@ C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\dao\ProveedoresDAO.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\dao\RazaDAO.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\dao\RegistroJornadaVacunacionDAO.java
+C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\dao\ReporteProductoDAO.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\dao\ServiciosDAO.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\dao\TransaccionesPuntosDAO.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\dao\VeterinarioDAO.java
@@ -80,6 +82,7 @@ C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\model\Proveedores.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\model\Razas.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\model\RegistroJornadaVacunacion.java
+C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\model\ReporteProducto.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\model\Servicios.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\model\TransaccionesPuntos.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\model\Veterinarios.java
@@ -109,6 +112,7 @@ C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Vistas\ProveedoresVIEW.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Vistas\RazasVIEW.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Vistas\RegistroJornadaVacunacionVIEW.java
+C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Vistas\ReporteProductoVIEW.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Vistas\ServiciosVIEW.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Vistas\TransaccionesPuntosVIEW.java
 C:\Users\usuario\OneDrive\Documents\NetBeansProjects\Happy_feet_veterinaria\src\main\java\Vistas\VeterinariosVIEW.java

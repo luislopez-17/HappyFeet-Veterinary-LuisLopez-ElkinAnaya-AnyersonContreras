@@ -29,6 +29,7 @@ import Vistas.ProductoTiposVIEW;
 import Vistas.ProveedoresVIEW;
 import Vistas.RazasVIEW;
 import Vistas.RegistroJornadaVacunacionVIEW;
+import Vistas.ReporteProductoVIEW;
 import Vistas.ServiciosVIEW;
 import Vistas.TransaccionesPuntosVIEW;
 import Vistas.VeterinariosVIEW;
@@ -71,6 +72,7 @@ public class HappyFeetVeterinaria {
         TransaccionesPuntosVIEW VistaTransaccionesPuntos = new TransaccionesPuntosVIEW();
         BeneficiosClubVIEW VistaBeneficiosClub = new BeneficiosClubVIEW();
         CanjesBeneficiosVIEW VistaCanjesBeneficios = new CanjesBeneficiosVIEW();
+        ReporteProductoVIEW VistaReporteProducto = new ReporteProductoVIEW();
         
         do {
             System.out.println("\n========= MENÚ PRINCIPAL =========");
@@ -102,6 +104,7 @@ public class HappyFeetVeterinaria {
             System.out.println("26. Transacciones Puntos");
             System.out.println("27. Beneficios club");
             System.out.println("28. Canjeos Beneficios");
+            System.out.println("29. Reporte Productos");
             System.out.println("0. Salir");
                     
             System.out.print("Seleccione una opción: ");
@@ -136,6 +139,7 @@ public class HappyFeetVeterinaria {
                 case 26 -> VistaTransaccionesPuntos.mostrarMenu();
                 case 27 -> VistaBeneficiosClub.mostrarMenu();
                 case 28 -> VistaCanjesBeneficios.mostrarMenu(); 
+                case 29 -> VistaReporteProducto.mostrarMenu();
                 case 0 -> System.out.println("Cerrando el sistema...");
                 default -> System.out.println("Opción inválida.");
             }

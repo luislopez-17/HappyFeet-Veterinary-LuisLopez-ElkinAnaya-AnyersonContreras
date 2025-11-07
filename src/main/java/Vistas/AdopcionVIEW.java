@@ -25,7 +25,8 @@ public class AdopcionVIEW {
             System.out.println("2. Modificar adopción");
             System.out.println("3. Eliminar adopción");
             System.out.println("4. Listar adopciones");
-            System.out.println("5. Salir");
+            System.out.println("5. Generar contrato adopcion");
+            System.out.println("6. Salir");
             System.out.print("Seleccione una opción: ");
 
             try {
@@ -48,7 +49,10 @@ public class AdopcionVIEW {
                 case 4:
                     listarAdopciones();
                     break;
-                case 5:
+                case 5: 
+                    generarContratoAdopcion();
+                    break;
+                case 6:
                     System.out.println("Saliendo del sistema...");
                     break;
                 default:
@@ -106,6 +110,16 @@ public class AdopcionVIEW {
                 System.out.println(a);
             }
         }
+    }
+    
+    public void generarContratoAdopcion() {
+        System.out.println("==== FINALIZAR Y GENERAR CONTRATO DE ADOPCIÓN ====");
+        System.out.print("Ingrese el ID de la adopción: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        String resultado = controller.generarYGuardarContrato(id);
+        System.out.println("\n" + resultado);
     }
 
     // MÉTODOS AUXILIARES 

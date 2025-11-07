@@ -9,7 +9,11 @@ package dao;
  * @author usuario
  */
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import model.ProcedimientosEspeciales;
@@ -184,5 +188,72 @@ public class ProcedimientosEspecialesDAO {
     }
     return lista;
 }
+    
+    //EXAMEN
+    public void actualizarEstado(int idProcedimiento, ProcedimientosEspeciales.Estado nuevoEstado) throws SQLException {
+        String sql = "UPDATE procedimientos_especiales SET estado = ? WHERE id = ?";
+        
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            
+            stmt.setString(1, nuevoEstado.name());
+            stmt.setInt(2, idProcedimiento);
+            int filas = stmt.executeUpdate();
+            
+            if (filas > 0) {
+                System.out.println("Estado del procedimiento actualizado a: " + nuevoEstado);
+                // Luego de actualizar, verificamos si debe notificarse
+                verificarProximoControl(con, idProcedimiento);
+            } else {
+                System.out.println("No se encontró un procedimiento con ese ID.");
+            }
+        }
+    }
+
+    // === Verificar si tiene proximo control y estado finalizado ===
+    private void verificarProximoControl(Connection con, int idProcedimiento) throws SQLException {
+        String sql = """
+            SELECT p.mascota_id, p.proximo_control, m.dueno_id
+            FROM procedimientos_especiales p
+            JOIN mascotas m ON p.mascota_id = m.id
+            WHERE p.id = ? AND p.estado = 'Finalizado' AND p.proximo_control IS NOT NULL
+        """;
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, idProcedimiento);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int idMascota = rs.getInt("mascota_id");
+                int idDueno = rs.getInt("dueno_id");
+                Date fechaControl = rs.getDate("proximo_control");
+
+                // Mensaje en consola
+                System.out.println("\n*** RECORDATORIO DE CONTROL PRÓXIMO ***");
+                System.out.println("Mascota ID: " + idMascota);
+                System.out.println("Dueño ID: " + idDueno);
+                System.out.println("Fecha sugerida de control: " + fechaControl);
+                System.out.println("Tarea: Contactar al dueño para agendar.\n");
+
+                // Guardar también en archivo log
+                registrarEnArchivo(idMascota, idDueno, fechaControl);
+            }
+        }
+    }
+
+    // === Escribir en archivo ===
+    private void registrarEnArchivo(int idMascota, int idDueno, Date fechaControl) {
+        try (FileWriter fw = new FileWriter("agenda_controles.log", true)) {
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String fechaActual = LocalDateTime.now().format(formato);
+
+            String linea = String.format("[%s] | TAREA_PENDIENTE | Mascota_ID=%d | Dueño_ID=%d | Fecha_Control_Sugerida=%s%n",
+                    fechaActual, idMascota, idDueno, fechaControl.toString());
+
+            fw.write(linea);
+        } catch (IOException e) {
+            System.err.println("Error al escribir en el archivo log: " + e.getMessage());
+        }
+    }
 
 }

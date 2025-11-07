@@ -139,4 +139,14 @@ public class ProcedimientosEspecialesController {
     public List<ProcedimientosEspeciales> listar(){
         return procedimientosDao.listar();
     }
+    
+    //EXAMEN 
+    public void finalizarProcedimiento(int idProcedimiento) {
+        try {
+            procedimientosDao.actualizarEstado(idProcedimiento, ProcedimientosEspeciales.Estado.Finalizado);
+        } catch (SQLException e) {
+            System.err.println("Error al finalizar el procedimiento: " + e.getMessage());
+        }
+    }
 }
+    

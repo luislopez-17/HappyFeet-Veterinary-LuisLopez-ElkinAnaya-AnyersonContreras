@@ -3,9 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dao;
+import java.io.FileWriter;
+import java.io.IOException;
 import model.Adopcion;
 import utils.ConexionDB;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -171,5 +175,112 @@ public class AdopcionDAO {
 
     return lista;
 }
+    //EXAMEN
+    
+    // ✅ Verificar si existe adopción sin contrato
+    public boolean existeAdopcionSinContrato(Connection con, int adopcionId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM adopciones WHERE id = ? AND contrato_texto IS NULL";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, adopcionId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
+    // ✅ Obtener datos completos para el contrato
+    public Adopcion obtenerDatosCompletos(Connection con, int adopcionId) throws SQLException {
+    String sql = """
+        SELECT a.id, a.mascota_adopcion_id, a.dueno_id, a.fecha_adopcion,
+               a.contrato_texto, a.condiciones_especiales,
+               a.seguimiento_requerido, a.fecha_primer_seguimiento,
+               ma.id AS id_mascota_adopcion,
+               m.nombre AS nombre_mascota, m.microchip,
+               d.nombre_completo AS nombre_dueno, d.documento_identidad AS documento_dueno,
+               r.nombre AS nombre_raza, e.nombre AS nombre_especie
+        FROM adopciones a
+        JOIN duenos d ON a.dueno_id = d.id
+        JOIN mascotas_adopcion ma ON a.mascota_adopcion_id = ma.id
+        JOIN mascotas m ON ma.mascota_id = m.id
+        JOIN razas r ON m.raza_id = r.id
+        JOIN especies e ON r.especie_id = e.id
+        WHERE a.id = ?
+    """;
+
+    try (PreparedStatement stmt = con.prepareStatement(sql)) {
+        stmt.setInt(1, adopcionId);
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                Adopcion adop = new Adopcion(
+                    rs.getInt("id"),
+                    rs.getInt("mascota_adopcion_id"),
+                    rs.getInt("dueno_id"),
+                    rs.getDate("fecha_adopcion"),
+                    rs.getString("contrato_texto"),
+                    rs.getString("condiciones_especiales"),
+                    rs.getBoolean("seguimiento_requerido"),
+                    rs.getDate("fecha_primer_seguimiento")
+                );
+                adop.setMascotaAdopcion(rs.getString("nombre_mascota"));
+                adop.setDueno(rs.getString("nombre_dueno"));
+                adop.setRazaNombre(rs.getString("nombre_raza"));
+                adop.setEspecieNombre(rs.getString("nombre_especie"));
+                adop.setDocumentoDueno(rs.getString("documento_dueno"));
+                adop.setMicrochip(rs.getString("microchip"));
+                return adop;
+            }
+        }
+    }
+    return null;
+}
+
+
+    // ✅ Guardar contrato en archivo y base de datos
+    public void guardarContrato(Connection con, int adopcionId, String contratoTexto) throws SQLException, IOException {
+        // 1️⃣ Crear archivo
+        String nombreArchivo = "contrato_adopcion_" + adopcionId + ".txt";
+        try (FileWriter writer = new FileWriter(nombreArchivo)) {
+            writer.write(contratoTexto);
+        }
+
+        // 2️⃣ Actualizar campo en BD
+        String sql = "UPDATE adopciones SET contrato_texto = ? WHERE id = ?";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, contratoTexto);
+            stmt.setInt(2, adopcionId);
+            stmt.executeUpdate();
+        }
+    }
+
+    // ✅ Generar texto del contrato
+    public String generarContratoTexto(Adopcion adopcion) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String fecha = LocalDateTime.now().format(formatter);
+        String microchip = (adopcion.getMicrochip() == null || adopcion.getMicrochip().isBlank())
+                ? "N/A"
+                : adopcion.getMicrochip();
+
+        return """
+            --- CONTRATO DE ADOPCIÓN "HAPPY FEET" ---
+            FECHA: """ + fecha + """
+
+            DATOS DEL ADOPTANTE:
+            Nombre: """ + adopcion.getDuenoId() + """
+            Documento: """ + adopcion.getDocumentoDueno() + """
+
+            DATOS DE LA MASCOTA:
+            Nombre: """ + adopcion.getMascotaAdopcionId()+ """
+            Especie: """ + adopcion.getEspecieNombre() + """
+            Raza: """ + adopcion.getRazaNombre() + """
+            Identificación: """ + microchip + """
+
+            El adoptante se compromete a brindar al animal una vida digna, alimentación,
+            atención médica y afecto, garantizando su bienestar y notificar a "Happy Feet"
+            cualquier cambio relevante en su situación o salud.
+
+            Firma del adoptante: ________________________
+            """;
+    }
 }
     

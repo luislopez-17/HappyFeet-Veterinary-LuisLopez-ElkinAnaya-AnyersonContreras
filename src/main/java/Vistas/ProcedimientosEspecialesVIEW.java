@@ -26,6 +26,7 @@ public class ProcedimientosEspecialesVIEW {
             System.out.println("2. Actualizar procedimiento");
             System.out.println("3. Eliminar procedimiento");
             System.out.println("4. Listar procedimientos");
+            System.out.println("5. Finalizar procedimiento");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opción: ");
             opcion = leerEntero();
@@ -35,6 +36,7 @@ public class ProcedimientosEspecialesVIEW {
                 case 2 -> actualizar();
                 case 3 -> eliminar();
                 case 4 -> listar();
+                case 5 -> finalizarProcedimiento();
                 case 0 -> System.out.println("Saliendo del módulo de procedimientos...");
                 default -> System.out.println("Opción inválida.");
             }
@@ -134,6 +136,13 @@ public class ProcedimientosEspecialesVIEW {
         } else {
             lista.forEach(System.out::println);
         }
+    }
+    
+    private void finalizarProcedimiento() {
+        System.out.println("==== FINALIZAR PROCEDIMIENTO ====");
+        System.out.print("Ingrese el ID del procedimiento: ");
+        int id = sc.nextInt();
+        controller.finalizarProcedimiento(id);
     }
 
     private int leerEntero() {

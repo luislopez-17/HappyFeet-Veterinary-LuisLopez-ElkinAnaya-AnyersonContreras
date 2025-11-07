@@ -22,6 +22,11 @@ public class Adopcion {
 
     private String mascotaAdopcion;
     private String dueno;
+    
+    private String razaNombre;
+    private String especieNombre;
+    private String documentoDueno;
+    private String microchip;
 
     public Adopcion(int id, int mascotaAdopcionId, int duenoId, Date fechaAdopcion,
                     String contratoTexto, String condicionesEspeciales,
@@ -59,6 +64,39 @@ public class Adopcion {
 
     public void setMascotaAdopcion(String mascotaAdopcion) { this.mascotaAdopcion = mascotaAdopcion; }
     public void setDueno(String dueno) { this.dueno = dueno; }
+    
+    public String getRazaNombre() {
+        return razaNombre;
+    }
+
+    public void setRazaNombre(String razaNombre) {
+        this.razaNombre = razaNombre;
+    }
+
+    public String getEspecieNombre() {
+        return especieNombre;
+    }
+
+    public void setEspecieNombre(String especieNombre) {
+        this.especieNombre = especieNombre;
+    }
+
+    public String getDocumentoDueno() {
+        return documentoDueno;
+    }
+
+    public void setDocumentoDueno(String documentoDueno) {
+        this.documentoDueno = documentoDueno;
+    }
+
+    public String getMicrochip() {
+        return microchip;
+    }
+
+    public void setMicrochip(String microchip) {
+        this.microchip = microchip;
+    }
+
 
     public String toString() {
         String nombreMascotaAdopcion = (this.mascotaAdopcion != null) ? this.mascotaAdopcion : "MascotaAdopcion#" + mascotaAdopcionId;

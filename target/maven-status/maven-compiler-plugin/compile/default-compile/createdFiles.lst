@@ -1,6 +1,7 @@
 dao\CanjesBeneficiosDAO.class
 model\BeneficiosClub.class
 model\Servicios.class
+dao\ReporteProductoDAO.class
 Controller\JornadaVacunacionController.class
 dao\FacturaDAO.class
 Vistas\ServiciosVIEW.class
@@ -96,6 +97,7 @@ Vistas\CitasVIEW.class
 dao\ProcedimientosEspecialesDAO.class
 Controller\ItemFacturaController.class
 dao\ItemFacturaDAO.class
+Vistas\ReporteProductoVIEW.class
 dao\CitasDAO.class
 model\CanjesBeneficios$Estado.class
 Controller\InventarioController.class
@@ -107,6 +109,7 @@ model\BeneficiosClub$TipoBeneficio.class
 dao\VeterinarioDAO.class
 dao\ServiciosDAO.class
 model\JornadasVacunaciones$Estado.class
+model\ReporteProducto.class
 Vistas\ProveedoresVIEW.class
 Controller\PreescripcionController.class
 model\Razas.class
@@ -118,3 +121,4 @@ model\Citas.class
 model\TransaccionesPuntos.class
 Controller\CitaEstadosController.class
 Controller\CanjesBeneficiosController.class
+Controller\ReporteProductoController.class
